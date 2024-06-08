@@ -15,6 +15,7 @@ class CameraBody extends StatelessWidget {
       children: [
         Expanded(
           child: Container(
+            height: 300,
             decoration: BoxDecoration(
               color: Colors.black,
               border: Border.all(
@@ -39,15 +40,61 @@ class CameraBody extends StatelessWidget {
             ),
           ),
         ),
-        Consumer<CameraProvider>(builder: (context, sliderValue, child) {
-          return Slider(
-              min: 0,
-              max: 1,
-              value: sliderValue.value,
-              onChanged: (val) {
-                sliderValue.setValue(val);
-              });
-        }),
+        Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text("IOS"),
+                ),
+                Consumer<CameraProvider>(builder: (context, iosValue, child) {
+                  return Slider(
+                      min: 0,
+                      max: 1,
+                      value: iosValue.iosValue,
+                      onChanged: (val) {
+                        iosValue.setIOSValue(val);
+                      });
+                }),
+              ],
+            ),
+         Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text("Shutter Speed"),
+              ),
+              Consumer<CameraProvider>(builder: (context, shutterSpeedValue, child) {
+                return Slider(
+                    min: 0,
+                    max: 1,
+                    value: shutterSpeedValue.shutterSpeedValue,
+                    onChanged: (val) {
+                      shutterSpeedValue.setShutterSpeedValue(val);
+                    });
+              }),
+            ],
+          ),
+
+    Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text("Focus Distance"),
+            ),
+            Consumer<CameraProvider>(builder: (context, focusDistanceValue, child) {
+              return Slider(
+                  min: 0,
+                  max: 1,
+                  value: focusDistanceValue.value,
+                  onChanged: (val) {
+                    focusDistanceValue.setValue(val);
+                  });
+            }),
+          ],
+        ),
         SizedBox(
           width: MediaQuery.sizeOf(context).width,
           child: Row(

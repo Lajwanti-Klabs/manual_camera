@@ -22,13 +22,32 @@ class CameraProvider with ChangeNotifier{
   }
 
 
-  double _value = 1.0;
+  double _value = 0.3;
   double get value => _value;
 
   void setValue(double val){
     _value = val;
     notifyListeners();
   }
+
+
+  double _iosValue = 0.1;
+  double get iosValue => _iosValue;
+
+  void setIOSValue(double val){
+    _iosValue = val;
+    notifyListeners();
+  }
+
+
+  double _shutterSpeedValue = 0.2;
+  double get shutterSpeedValue => _shutterSpeedValue;
+
+  void setShutterSpeedValue(double val){
+    _shutterSpeedValue = val;
+    notifyListeners();
+  }
+
 
 
 
@@ -39,9 +58,9 @@ class CameraProvider with ChangeNotifier{
     controller = CameraController(
         cameraDescription!,
         ResolutionPreset.medium,
-        iso: value.toInt(),
+        iso: iosValue.toInt(),
         focusDistance: value,
-        shutterSpeed: value.toInt());
+        shutterSpeed: shutterSpeedValue.toInt());
 
     // If the controller is updated then update the UI.
     controller!.addListener(() {
