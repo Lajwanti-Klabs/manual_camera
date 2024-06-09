@@ -15,18 +15,22 @@ class CameraProvider with ChangeNotifier{
 
 
 
+
   CameraController? controller;
-  set setController(CameraController? value){
+  CameraController? get con => controller;
+
+ void setController(CameraController? value){
     controller = value;
+   updateCameraSettings();
     notifyListeners();
   }
-
 
   double _value = 0.3;
   double get value => _value;
 
   void setValue(double val){
     _value = val;
+    log("focus distance==>${value*100}");
     notifyListeners();
   }
 
@@ -36,6 +40,7 @@ class CameraProvider with ChangeNotifier{
 
   void setIOSValue(double val){
     _iosValue = val;
+    log("IOS VALUE==>${(_iosValue*100).toInt()}");
     notifyListeners();
   }
 
@@ -45,26 +50,40 @@ class CameraProvider with ChangeNotifier{
 
   void setShutterSpeedValue(double val){
     _shutterSpeedValue = val;
+
     notifyListeners();
+    log("shutter speed==>${ (shutterSpeedValue*100).toInt()}");
   }
 
 
 
 
-  void onNewCameraSelected(CameraDescription? cameraDescription) async {
-    if (controller != null) {
-      await controller!.dispose();
-    }
-    controller = CameraController(
+  Future<void> onNewCameraSelected(CameraDescription? cameraDescription) async {
+    // if (controller != null) {
+    //   await controller!.dispose();
+    // }
+    final isoVal = (iosValue*100).toStringAsFixed(0);
+    log("oos==>${int.parse(isoVal).toString()}");
+    final ssVal = (shutterSpeedValue*100).toStringAsFixed(0);
+    log("ss==>${int.parse(ssVal).toString()}");
+    final fdVal = (value*100).toStringAsFixed(2);
+    log("fd==>${fdVal.toString()}");
+
+
+
+      controller = CameraController(
         cameraDescription!,
         ResolutionPreset.medium,
-        iso: iosValue.toInt(),
-        focusDistance: value,
-        shutterSpeed: shutterSpeedValue.toInt());
+        iso: int.parse(isoVal) ,
+        focusDistance: double.parse(fdVal),
+        shutterSpeed: int.parse(ssVal),
+
+      );
 
     // If the controller is updated then update the UI.
     controller!.addListener(() {
-       notifyListeners();
+      log("ob;;");
+    notifyListeners();
       if (controller!.value.hasError) {
         log('Camera error ${controller!.value.errorDescription}');
        }
@@ -72,11 +91,44 @@ class CameraProvider with ChangeNotifier{
 
     try {
       await controller!.initialize();
+      log("ob in");
+      notifyListeners();
     } on CameraException catch (e) {
       log('Camera exception: $e');
       _showCameraException(e);
     }
     notifyListeners();
+  }
+
+
+  Future<void> updateCameraSettings() async {
+    final isoVal = (iosValue*100).toStringAsFixed(0);
+    log("oos==>${int.parse(isoVal).toString()}");
+    final ssVal = (shutterSpeedValue*100).toStringAsFixed(0);
+    log("ss==>${int.parse(ssVal).toString()}");
+    final fdVal = (value*100).toStringAsFixed(2);
+    log("fd==>${fdVal.toString()}");
+    
+    
+   // if (controller != null && controller!.value.isInitialized) {
+      try {
+
+        controller = CameraController(
+            controller!.description,
+            ResolutionPreset.medium,
+            iso: int.parse(isoVal) ,
+            focusDistance: double.parse(fdVal),
+            shutterSpeed: int.parse(ssVal),
+
+        );
+        log("message");
+        notifyListeners();
+
+      } on CameraException catch (e) {
+        log('Error updating camera settings: $e');
+      }
+
+
   }
 
   void onTakePictureButtonPressed() {
@@ -124,5 +176,9 @@ class CameraProvider with ChangeNotifier{
     FlushBarMessage().flushBarMessage(message: "${e.code}${e.description}");
   }
 
-
+  // @override
+  // void dispose() {
+  //   controller?.dispose();
+  //   super.dispose();
+  // }
 }

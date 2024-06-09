@@ -33,19 +33,22 @@ class CameraBody extends StatelessWidget {
                         ? null
                         : AspectRatio(
                             aspectRatio:
-                                controllerValue.controller!.value.aspectRatio,
-                            child: CameraPreview(controllerValue.controller!),
+                                controllerValue.con!.value.aspectRatio,
+                            child: CameraPreview(controllerValue.con!),
                           ));
               }),
             ),
           ),
         ),
+        Consumer<CameraProvider>(builder:(context,vl,child){
+          return Text("values: ${(vl.iosValue*100).toStringAsFixed(0)},${(vl.shutterSpeedValue*100).toStringAsFixed(0)},${(vl.value*100).toStringAsFixed(2)} ");
+        }),
         Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("IOS"),
+                  child: Text("ISO"),
                 ),
                 Consumer<CameraProvider>(builder: (context, iosValue, child) {
                   return Slider(
@@ -54,6 +57,11 @@ class CameraBody extends StatelessWidget {
                       value: iosValue.iosValue,
                       onChanged: (val) {
                         iosValue.setIOSValue(val);
+                        iosValue.onNewCameraSelected(cameras.first);
+
+
+
+
                       });
                 }),
               ],
@@ -71,7 +79,11 @@ class CameraBody extends StatelessWidget {
                     max: 1,
                     value: shutterSpeedValue.shutterSpeedValue,
                     onChanged: (val) {
-                      shutterSpeedValue.setShutterSpeedValue(val);
+                        shutterSpeedValue.setShutterSpeedValue(val);
+                        shutterSpeedValue.onNewCameraSelected(cameras.first);
+
+
+
                     });
               }),
             ],
@@ -91,6 +103,8 @@ class CameraBody extends StatelessWidget {
                   value: focusDistanceValue.value,
                   onChanged: (val) {
                     focusDistanceValue.setValue(val);
+                    focusDistanceValue.onNewCameraSelected(cameras.first);
+
                   });
             }),
           ],
