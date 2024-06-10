@@ -21,7 +21,7 @@ class CameraProvider with ChangeNotifier{
 
  void setController(CameraController? value){
     controller = value;
-   updateCameraSettings();
+   //updateCameraSettings();
     notifyListeners();
   }
 

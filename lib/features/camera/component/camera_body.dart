@@ -57,10 +57,6 @@ class CameraBody extends StatelessWidget {
                       value: iosValue.iosValue,
                       onChanged: (val) {
                         iosValue.setIOSValue(val);
-                        iosValue.onNewCameraSelected(cameras.first);
-
-
-
 
                       });
                 }),
@@ -80,9 +76,6 @@ class CameraBody extends StatelessWidget {
                     value: shutterSpeedValue.shutterSpeedValue,
                     onChanged: (val) {
                         shutterSpeedValue.setShutterSpeedValue(val);
-                        shutterSpeedValue.onNewCameraSelected(cameras.first);
-
-
 
                     });
               }),
@@ -103,7 +96,6 @@ class CameraBody extends StatelessWidget {
                   value: focusDistanceValue.value,
                   onChanged: (val) {
                     focusDistanceValue.setValue(val);
-                    focusDistanceValue.onNewCameraSelected(cameras.first);
 
                   });
             }),
