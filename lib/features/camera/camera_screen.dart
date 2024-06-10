@@ -39,22 +39,22 @@ class _CameraScreenState extends State<CameraScreen>  with WidgetsBindingObserve
     super.dispose();
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    final cameraProvider = Provider.of<CameraProvider>(this.context,listen: false);
-
-    // App state changed before we got the chance to initialize.
-    if (cameraProvider.controller == null || !cameraProvider.controller!.value.isInitialized) {
-      return;
-    }
-    if (state == AppLifecycleState.inactive) {
-      cameraProvider.controller?.dispose();
-    } else if (state == AppLifecycleState.resumed) {
-      if (cameraProvider.controller != null) {
-        cameraProvider.onNewCameraSelected(cameras.first);
-      }
-    }
-  }
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   final cameraProvider = Provider.of<CameraProvider>(this.context,listen: false);
+  //
+  //   // App state changed before we got the chance to initialize.
+  //   if (cameraProvider.controller == null || !cameraProvider.controller!.value.isInitialized) {
+  //     return;
+  //   }
+  //   if (state == AppLifecycleState.inactive) {
+  //     cameraProvider.controller?.dispose();
+  //   } else if (state == AppLifecycleState.resumed) {
+  //     if (cameraProvider.controller != null) {
+  //       cameraProvider.onNewCameraSelected(cameras.first);
+  //     }
+  //   }
+  // }
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
