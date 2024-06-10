@@ -1,15 +1,30 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:manual_camera_pro/camera.dart';
+import 'package:manual_camera_test/main.dart';
 import 'package:manual_camera_test/provider/camera_provider.dart';
 import 'package:provider/provider.dart';
 
-class CameraBody extends StatelessWidget {
+class CameraBody extends StatefulWidget {
   final List<CameraDescription> cameras;
   const CameraBody({super.key, required this.cameras});
 
   @override
+  State<CameraBody> createState() => _CameraBodyState();
+}
+
+
+class _CameraBodyState extends State<CameraBody> {
+  @override
+  void didUpdateWidget(CameraBody oldWidget) {
+
+    final cameraProvider = Provider.of<CameraProvider>(this.context, listen: false);
+    super.didUpdateWidget(oldWidget);
+    cameraProvider.onNewCameraSelected(cameras[0]);
+  }
+  @override
   Widget build(BuildContext context) {
+
     final cameraProvider = Provider.of<CameraProvider>(context, listen: false);
     return Column(
       children: [
@@ -31,17 +46,18 @@ class CameraBody extends StatelessWidget {
                     child: controllerValue.controller == null ||
                             !controllerValue.controller!.value.isInitialized
                         ? null
+
                         : AspectRatio(
                             aspectRatio:
-                                controllerValue.con!.value.aspectRatio,
-                            child: CameraPreview(controllerValue.con!),
+                                controllerValue.controller!.value.aspectRatio,
+                            child: CameraPreview(controllerValue.controller!),
                           ));
               }),
             ),
           ),
         ),
         Consumer<CameraProvider>(builder:(context,vl,child){
-          return Text("values: ${(vl.iosValue*100).toStringAsFixed(0)},${(vl.shutterSpeedValue*100).toStringAsFixed(0)},${(vl.value*100).toStringAsFixed(2)} ");
+          return Text("values: ${(vl.iosValue*100).toStringAsFixed(0)},${(vl.shutterSpeedValue*100).toStringAsFixed(0)},${(vl.value).toStringAsFixed(2)} ");
         }),
         Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,7 +73,9 @@ class CameraBody extends StatelessWidget {
                       value: iosValue.iosValue,
                       onChanged: (val) {
                         iosValue.setIOSValue(val);
-
+                        if(iosValue.controller != null){
+                          didUpdateWidget(widget);
+                        }
                       });
                 }),
               ],
@@ -76,6 +94,10 @@ class CameraBody extends StatelessWidget {
                     value: shutterSpeedValue.shutterSpeedValue,
                     onChanged: (val) {
                         shutterSpeedValue.setShutterSpeedValue(val);
+                        if(shutterSpeedValue.controller != null){
+                          didUpdateWidget(widget);
+
+                        }
 
                     });
               }),
@@ -96,6 +118,10 @@ class CameraBody extends StatelessWidget {
                   value: focusDistanceValue.value,
                   onChanged: (val) {
                     focusDistanceValue.setValue(val);
+                    if(focusDistanceValue.controller != null){
+                      didUpdateWidget(widget);
+
+                    }
 
                   });
             }),

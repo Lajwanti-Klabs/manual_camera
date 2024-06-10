@@ -25,7 +25,8 @@ if (flutterVersionName == null) {
 
 android {
     namespace = "com.example.manual_camera_test"
-    compileSdk = flutter.compileSdkVersion
+    compileSdkVersion 34
+    flavorDimensions "default"
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -39,7 +40,8 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdk = 21
-        targetSdk = flutter.targetSdkVersion
+        targetSdkVersion 29
+        multiDexEnabled true
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
     }
