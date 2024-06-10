@@ -49,8 +49,8 @@ class _CameraBodyState extends State<CameraBody> {
 
                         : AspectRatio(
                             aspectRatio:
-                                controllerValue.controller!.value.aspectRatio,
-                            child: CameraPreview(controllerValue.controller!),
+                                controllerValue.con!.value.aspectRatio,
+                            child: CameraPreview(controllerValue.con!),
                           ));
               }),
             ),
